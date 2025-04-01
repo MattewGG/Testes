@@ -6,6 +6,9 @@
         <option value="name">Buscar por Nome</option>
         <option value="date">Buscar por Data</option>
         <option value="period">Buscar por Período</option>
+        <option value="fantasy_name">Buscar por Nome Fantasia</option>
+        <option value="city">Buscar por Cidade</option>
+        <option value="modality">Buscar por Modalidade</option>
       </select>
 
       <input
@@ -13,6 +16,24 @@
         v-model="searchTerm"
         placeholder="Buscar transportadora..."
         @keyup.enter="searchCarriers" 
+      />
+
+      <input
+        v-if="searchType === 'fantasy_name'"
+        v-model="fantasyName"
+        placeholder="Nome Fantasia"
+      />
+
+      <input
+        v-if="searchType === 'city'"
+        v-model="city"
+        placeholder="Cidade"
+      />
+
+      <input
+        v-if="searchType === 'modality'"
+        v-model="modality"
+        placeholder="Modalidade"
       />
 
       <input
@@ -88,8 +109,11 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      searchType: 'name', 
+      searchType: 'name', // Tipo de busca padrão
       searchTerm: '',
+      fantasyName: '',
+      city: '',
+      modality: '',
       date: '',
       startDate: '',
       endDate: '',
@@ -103,6 +127,15 @@ export default {
 
       if (this.searchType === 'name') {
         url = `http://127.0.0.1:5000/get?term=${this.searchTerm}`;
+      } else if (this.searchType === 'fantasy_name') {
+        url = `http://127.0.0.1:5000/carriers/fantasy_name`;
+        params = { name: this.fantasyName };
+      } else if (this.searchType === 'city') {
+        url = `http://127.0.0.1:5000/carriers/city`;
+        params = { city: this.city };
+      } else if (this.searchType === 'modality') {
+        url = `http://127.0.0.1:5000/carriers/modality`;
+        params = { modality: this.modality };
       } else if (this.searchType === 'date') {
         url = `http://127.0.0.1:5000/carriers/date`;
         params = { date: this.date };
@@ -114,124 +147,124 @@ export default {
       try {
         const response = await axios.get(url, { params });
 
-if (Array.isArray(response.data)) {
-  this.carriers = response.data; 
-} else {
-  console.error('Resposta inesperada:', response.data);
-  this.carriers = [];
-}
-} catch (error) {
-console.error('Erro ao buscar transportadoras:', error);
-this.carriers = [];
-}
-}
-}
+        if (Array.isArray(response.data)) {
+          this.carriers = response.data; 
+        } else {
+          console.error('Resposta inesperada:', response.data);
+          this.carriers = [];
+        }
+      } catch (error) {
+        console.error('Erro ao buscar transportadoras:', error);
+        this.carriers = [];
+      }
+    }
+  }
 };
 </script>
 
 <style scoped>
 .container {
-max-width: 1500px; 
-margin: 0 auto;
-padding: 20px;
+  max-width: 1500px; 
+  margin: 0 auto;
+  padding: 20px;
 }
 
 h1 {
-text-align: center;
-margin-bottom: 20px;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .search-bar {
-display: flex;
-justify-content: center;
-margin-bottom: 20px;
-position: sticky;
-top: 0; 
-background-color: white; 
-z-index: 1000;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  position: sticky;
+  top: 0; 
+  background-color: white; 
+  z-index: 1000;
 }
 
 select {
-padding: 10px;
-font-size: 16px;
-margin-right: 10px;
+  padding: 10px;
+  font-size: 16px;
+  margin-right: 10px;
 }
 
 input {
-padding: 10px;
-font-size: 16px;
-border: 1px solid #ccc;
-border-radius: 20px; 
-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-margin-right: 10px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 20px; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+  margin-right: 10px;
 }
 
 button {
-padding: 10px 15px;
-font-size: 16px;
-background-color: #007bff;
-color: white;
-border: none;
-border-radius: 4px;
-cursor: pointer;
+  padding: 10px 15px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 button:hover {
-background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 .table-container {
-overflow-x: auto; 
+  overflow-x: auto; 
 }
 
 table {
-width: 100%;
-border-collapse: collapse;
-table-layout: fixed; 
-font-size: 14px; 
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; 
+  font-size: 14px; 
 }
 
 th {
-background-color: #007bff; 
-color: white; 
-padding: 10px; 
-position: sticky;
-top: 0; 
-z-index: 1000; 
+  background-color: #007bff; 
+  color: white; 
+  padding: 10px; 
+  position: sticky;
+  top: 0; 
+  z-index: 1000; 
 }
 
 th, td {
-padding: 10px; 
-border: 1px solid #ddd;
-overflow: hidden; 
-text-overflow: ellipsis; 
-white-space: normal; 
-word-wrap: break-word; 
+  padding: 10px; 
+  border: 1px solid #ddd;
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  white-space: normal; 
+  word-wrap: break-word; 
 }
 
 td {
-min-width: 100px; 
-max-width: 200px; 
+  min-width: 100px; 
+  max-width: 200px; 
 }
 
 tr:nth-child(even) {
-background-color: #f9f9f9; 
+  background-color: #f9f9f9; 
 }
 
 .no-results {
-text-align: center;
-color: #999;
-font-style: italic;
+  text-align: center;
+  color: #999;
+  font-style: italic;
 }
 
 @media (max-width: 600px) {
-.search-bar {
-flex-direction: column; 
-}
+  .search-bar {
+    flex-direction: column; 
+  }
 
-input, select {
-width: 100%; 
-margin-bottom: 10px; 
-}
+  input, select {
+    width: 100%; 
+    margin-bottom: 10px; 
+  }
 }
 </style>

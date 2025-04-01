@@ -1,5 +1,13 @@
 from flask import request, jsonify
-from app.controller import get_carriers, get_carriers_by_date, get_carriers_by_period
+from app.controller import (
+    get_carriers, 
+    get_carriers_by_date, 
+    get_carriers_by_period, 
+    get_carriers_by_city, 
+    get_carriers_by_fantasy_name, 
+    get_carriers_by_modality,
+)
+
 import numpy as np
 
 def init_routes(app):
@@ -47,4 +55,34 @@ def init_routes(app):
             return jsonify({"error": "Both start and end dates are required (format: YYYY-MM-DD)"}), 400
         
         result = get_carriers_by_period(start_date, end_date)
+        return jsonify(replace_nan_with_none(result)), 200
+
+
+    @app.route('/carriers/fantasy_name', methods=['GET'])
+    def get_by_fantasy_name():
+        name = request.args.get('name', '')
+        if not name:
+            return jsonify({"error": "Fantasy Name is required"}), 400
+        
+        result = get_carriers_by_fantasy_name(name)
+        return jsonify(replace_nan_with_none(result)), 200
+
+   
+    @app.route('/carriers/city', methods=['GET'])
+    def get_by_city():
+        city = request.args.get('city', '')
+        if not city:
+            return jsonify({"error": "City is required"}), 400
+        
+        result = get_carriers_by_city(city)
+        return jsonify(replace_nan_with_none(result)), 200
+
+
+    @app.route('/carriers/modality', methods=['GET'])
+    def get_by_modality():
+        modality = request.args.get('modality', '')
+        if not modality:
+            return jsonify({"error": "Modality is required"}), 400
+        
+        result = get_carriers_by_modality(modality)
         return jsonify(replace_nan_with_none(result)), 200
