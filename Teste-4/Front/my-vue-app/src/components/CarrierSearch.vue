@@ -2,12 +2,61 @@
   <div class="container">
     <h1>Busca de Empresas</h1>
     <div class="search-bar">
+      <select v-model="searchType">
+        <option value="name">Buscar por Nome</option>
+        <option value="date">Buscar por Data</option>
+        <option value="period">Buscar por Período</option>
+        <option value="fantasy_name">Buscar por Nome Fantasia</option>
+        <option value="city">Buscar por Cidade</option>
+        <option value="modality">Buscar por Modalidade</option>
+      </select>
+
       <input
+        v-if="searchType === 'name'"
         v-model="searchTerm"
         placeholder="Buscar transportadora..."
         @keyup.enter="searchCarriers" 
       />
-      <button @click="searchCarriers"> Buscar </button>
+
+      <input
+        v-if="searchType === 'fantasy_name'"
+        v-model="fantasyName"
+        placeholder="Nome Fantasia"
+      />
+
+      <input
+        v-if="searchType === 'city'"
+        v-model="city"
+        placeholder="Cidade"
+      />
+
+      <input
+        v-if="searchType === 'modality'"
+        v-model="modality"
+        placeholder="Modalidade"
+      />
+
+      <input
+        v-if="searchType === 'date'"
+        v-model="date"
+        type="date"
+        placeholder="Escolha uma data"
+      />
+
+      <div v-if="searchType === 'period'">
+        <input
+          v-model="startDate"
+          type="date"
+          placeholder="Data de Início"
+        />
+        <input
+          v-model="endDate"
+          type="date"
+          placeholder="Data de Fim"
+        />
+      </div>
+
+      <button @click="searchCarriers">Buscar</button>
     </div>
     
     <div class="table-container">
@@ -60,15 +109,44 @@ import axios from 'axios';
 export default {
   data() {
     return {
+      searchType: 'name', // Tipo de busca padrão
       searchTerm: '',
+      fantasyName: '',
+      city: '',
+      modality: '',
+      date: '',
+      startDate: '',
+      endDate: '',
       carriers: []
     };
   },
   methods: {
     async searchCarriers() {
+      let url = '';
+      let params = {};
+
+      if (this.searchType === 'name') {
+        url = `http://127.0.0.1:5000/get?term=${this.searchTerm}`;
+      } else if (this.searchType === 'fantasy_name') {
+        url = `http://127.0.0.1:5000/carriers/fantasy_name`;
+        params = { name: this.fantasyName };
+      } else if (this.searchType === 'city') {
+        url = `http://127.0.0.1:5000/carriers/city`;
+        params = { city: this.city };
+      } else if (this.searchType === 'modality') {
+        url = `http://127.0.0.1:5000/carriers/modality`;
+        params = { modality: this.modality };
+      } else if (this.searchType === 'date') {
+        url = `http://127.0.0.1:5000/carriers/date`;
+        params = { date: this.date };
+      } else if (this.searchType === 'period') {
+        url = `http://127.0.0.1:5000/carriers/period`;
+        params = { start: this.startDate, end: this.endDate };
+      }
+
       try {
-        const response = await axios.get(`http://127.0.0.1:5000/get?term=${this.searchTerm}`);
-        
+        const response = await axios.get(url, { params });
+
         if (Array.isArray(response.data)) {
           this.carriers = response.data; 
         } else {
@@ -106,6 +184,12 @@ h1 {
   z-index: 1000;
 }
 
+select {
+  padding: 10px;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
 input {
   padding: 10px;
   font-size: 16px;
@@ -113,7 +197,6 @@ input {
   border-radius: 20px; 
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
   margin-right: 10px;
-  width: 300px;
 }
 
 button {
@@ -179,7 +262,7 @@ tr:nth-child(even) {
     flex-direction: column; 
   }
 
-  input {
+  input, select {
     width: 100%; 
     margin-bottom: 10px; 
   }

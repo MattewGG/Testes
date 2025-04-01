@@ -5,11 +5,47 @@ operadora_model = OperadoraModel("C:/Users/Pichau/Downloads/Relatorio_cadop.csv"
 
 def get_carriers(term, filter_date_from=None, filter_date_to=None):
     results = operadora_model.get_carriers(term)
-    
 
     if filter_date_from and filter_date_to:
-        results = [op for op in results 
-                  if (pd.notna(op.get('Data_Registro_ANS')) and 
-                  (filter_date_from <= op['Data_Registro_ANS'] <= filter_date_to))]
-    
+        filter_date_from = pd.to_datetime(filter_date_from, errors='coerce')
+        filter_date_to = pd.to_datetime(filter_date_to, errors='coerce')
+
+        filtered_results = []
+        for op in results:
+            if pd.notna(op.get('Data_Registro_ANS')): 
+                try:
+                    data_registro = pd.to_datetime(op['Data_Registro_ANS'], errors='coerce')
+                    if filter_date_from <= data_registro <= filter_date_to:
+                        op['Data_Registro_ANS'] = data_registro.strftime('%Y-%m-%d')
+                        filtered_results.append(op)
+                except Exception:
+                    continue  
+        results = filtered_results
+
     return results
+
+def get_carriers_by_date(date):
+    return get_carriers('', filter_date_from=date, filter_date_to=date)
+
+def get_carriers_by_period(start_date, end_date):
+    return get_carriers('', filter_date_from=start_date, filter_date_to=end_date)
+
+
+def get_carriers_by_fantasy_name(name):
+    results = operadora_model.get_carriers('')
+    name = name.strip().lower()
+    filtered_results = [
+        op for op in results 
+        if isinstance(op.get('Nome_Fantasia'), str) and name in op['Nome_Fantasia'].strip().lower()
+    ]
+
+    return filtered_results
+
+
+def get_carriers_by_city(city):
+    results = operadora_model.get_carriers('')
+    return [op for op in results if city.lower() in op.get('Cidade', '').lower()]
+
+def get_carriers_by_modality(modality):
+    results = operadora_model.get_carriers('')
+    return [op for op in results if modality.lower() in op.get('Modalidade', '').lower()]

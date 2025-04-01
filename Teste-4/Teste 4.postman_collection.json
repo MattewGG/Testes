@@ -1,0 +1,259 @@
+{
+	"info": {
+		"_postman_id": "7ff246c0-eacd-44ec-928a-0fcf0dd06324",
+		"name": "Teste 4",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "34097573"
+	},
+	"item": [
+		{
+			"name": "Geral",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"eventName\": \"Hard Rock\",\r\n  \"eventTime\": \"2024-12-30T15:00:00\",\r\n  \"cep\": \"89108000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/get?term=VILA",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"get"
+					],
+					"query": [
+						{
+							"key": "term",
+							"value": "VILA"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Data",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"eventName\": \"Hard Rock\",\r\n  \"eventTime\": \"2024-12-30T15:00:00\",\r\n  \"cep\": \"89108000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/carriers/date?date=2019-06-13",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"carriers",
+						"date"
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "2019-06-13"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Nome de fantasia",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"eventName\": \"Hard Rock\",\r\n  \"eventTime\": \"2024-12-30T15:00:00\",\r\n  \"cep\": \"89108000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/carriers/fantasy_name?name=AMIL",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"carriers",
+						"fantasy_name"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "AMIL"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Periodo",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"eventName\": \"Hard Rock\",\r\n  \"eventTime\": \"2024-12-30T15:00:00\",\r\n  \"cep\": \"89108000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/carriers/period?start=2023-10-01&end=2023-10-31",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"carriers",
+						"period"
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "2023-10-01"
+						},
+						{
+							"key": "end",
+							"value": "2023-10-31"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cidade",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"eventName\": \"Hard Rock\",\r\n  \"eventTime\": \"2024-12-30T15:00:00\",\r\n  \"cep\": \"89108000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/carriers/city?city=São Paulo",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"carriers",
+						"city"
+					],
+					"query": [
+						{
+							"key": "city",
+							"value": "São Paulo"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modalidade",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"eventName\": \"Hard Rock\",\r\n  \"eventTime\": \"2024-12-30T15:00:00\",\r\n  \"cep\": \"89108000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/carriers/modality?modality=Odontologia de Grupo",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"carriers",
+						"modality"
+					],
+					"query": [
+						{
+							"key": "modality",
+							"value": "Odontologia de Grupo"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
