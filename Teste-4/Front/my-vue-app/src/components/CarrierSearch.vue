@@ -2,12 +2,40 @@
   <div class="container">
     <h1>Busca de Empresas</h1>
     <div class="search-bar">
+      <select v-model="searchType">
+        <option value="name">Buscar por Nome</option>
+        <option value="date">Buscar por Data</option>
+        <option value="period">Buscar por Período</option>
+      </select>
+
       <input
+        v-if="searchType === 'name'"
         v-model="searchTerm"
         placeholder="Buscar transportadora..."
         @keyup.enter="searchCarriers" 
       />
-      <button @click="searchCarriers"> Buscar </button>
+
+      <input
+        v-if="searchType === 'date'"
+        v-model="date"
+        type="date"
+        placeholder="Escolha uma data"
+      />
+
+      <div v-if="searchType === 'period'">
+        <input
+          v-model="startDate"
+          type="date"
+          placeholder="Data de Início"
+        />
+        <input
+          v-model="endDate"
+          type="date"
+          placeholder="Data de Fim"
+        />
+      </div>
+
+      <button @click="searchCarriers">Buscar</button>
     </div>
     
     <div class="table-container">
@@ -60,128 +88,150 @@ import axios from 'axios';
 export default {
   data() {
     return {
+      searchType: 'name', 
       searchTerm: '',
+      date: '',
+      startDate: '',
+      endDate: '',
       carriers: []
     };
   },
   methods: {
     async searchCarriers() {
-      try {
-        const response = await axios.get(`http://127.0.0.1:5000/get?term=${this.searchTerm}`);
-        
-        if (Array.isArray(response.data)) {
-          this.carriers = response.data; 
-        } else {
-          console.error('Resposta inesperada:', response.data);
-          this.carriers = [];
-        }
-      } catch (error) {
-        console.error('Erro ao buscar transportadoras:', error);
-        this.carriers = [];
+      let url = '';
+      let params = {};
+
+      if (this.searchType === 'name') {
+        url = `http://127.0.0.1:5000/get?term=${this.searchTerm}`;
+      } else if (this.searchType === 'date') {
+        url = `http://127.0.0.1:5000/carriers/date`;
+        params = { date: this.date };
+      } else if (this.searchType === 'period') {
+        url = `http://127.0.0.1:5000/carriers/period`;
+        params = { start: this.startDate, end: this.endDate };
       }
-    }
-  }
+
+      try {
+        const response = await axios.get(url, { params });
+
+if (Array.isArray(response.data)) {
+  this.carriers = response.data; 
+} else {
+  console.error('Resposta inesperada:', response.data);
+  this.carriers = [];
+}
+} catch (error) {
+console.error('Erro ao buscar transportadoras:', error);
+this.carriers = [];
+}
+}
+}
 };
 </script>
 
 <style scoped>
 .container {
-  max-width: 1500px; 
-  margin: 0 auto;
-  padding: 20px;
+max-width: 1500px; 
+margin: 0 auto;
+padding: 20px;
 }
 
 h1 {
-  text-align: center;
-  margin-bottom: 20px;
+text-align: center;
+margin-bottom: 20px;
 }
 
 .search-bar {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-  position: sticky;
-  top: 0; 
-  background-color: white; 
-  z-index: 1000;
+display: flex;
+justify-content: center;
+margin-bottom: 20px;
+position: sticky;
+top: 0; 
+background-color: white; 
+z-index: 1000;
+}
+
+select {
+padding: 10px;
+font-size: 16px;
+margin-right: 10px;
 }
 
 input {
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 20px; 
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-  margin-right: 10px;
-  width: 300px;
+padding: 10px;
+font-size: 16px;
+border: 1px solid #ccc;
+border-radius: 20px; 
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+margin-right: 10px;
 }
 
 button {
-  padding: 10px 15px;
-  font-size: 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+padding: 10px 15px;
+font-size: 16px;
+background-color: #007bff;
+color: white;
+border: none;
+border-radius: 4px;
+cursor: pointer;
 }
 
 button:hover {
-  background-color: #0056b3;
+background-color: #0056b3;
 }
 
 .table-container {
-  overflow-x: auto; 
+overflow-x: auto; 
 }
 
 table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed; 
-  font-size: 14px; 
+width: 100%;
+border-collapse: collapse;
+table-layout: fixed; 
+font-size: 14px; 
 }
 
 th {
-  background-color: #007bff; 
-  color: white; 
-  padding: 10px; 
-  position: sticky;
-  top: 0; 
-  z-index: 1000; 
+background-color: #007bff; 
+color: white; 
+padding: 10px; 
+position: sticky;
+top: 0; 
+z-index: 1000; 
 }
 
 th, td {
-  padding: 10px; 
-  border: 1px solid #ddd;
-  overflow: hidden; 
-  text-overflow: ellipsis; 
-  white-space: normal; 
-  word-wrap: break-word; 
+padding: 10px; 
+border: 1px solid #ddd;
+overflow: hidden; 
+text-overflow: ellipsis; 
+white-space: normal; 
+word-wrap: break-word; 
 }
 
 td {
-  min-width: 100px; 
-  max-width: 200px; 
+min-width: 100px; 
+max-width: 200px; 
 }
 
 tr:nth-child(even) {
-  background-color: #f9f9f9; 
+background-color: #f9f9f9; 
 }
 
 .no-results {
-  text-align: center;
-  color: #999;
-  font-style: italic;
+text-align: center;
+color: #999;
+font-style: italic;
 }
 
 @media (max-width: 600px) {
-  .search-bar {
-    flex-direction: column; 
-  }
+.search-bar {
+flex-direction: column; 
+}
 
-  input {
-    width: 100%; 
-    margin-bottom: 10px; 
-  }
+input, select {
+width: 100%; 
+margin-bottom: 10px; 
+}
 }
 </style>
