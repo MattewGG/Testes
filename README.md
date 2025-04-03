@@ -29,7 +29,7 @@ O projeto "Testes de Nivelamento" consiste em uma série de desafios técnicos q
    - Implementado com scripts SQL compatíveis com MySQL 8 e PostgreSQL >10.0.
    - Estrutura tabelas para os arquivos baixados.
    - Importa os dados corretamente formatados.
-   - Executa consultas analíticas sobre operadoras de planos de saúde.
+   - Executa consultas analíticas sobre operadoras.
 
 4. **Teste de API**
    - Desenvolvido com Vue.js (frontend) e Python (backend).
