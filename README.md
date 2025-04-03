@@ -88,7 +88,7 @@ Certifique-se de ter os seguintes softwares instalados em sua máquina:
 ## Funcionalidades
 - Extração e transformação de dados.
 - Consultas SQL otimizadas para análise de dados.
-- API para busca e manipulação de informações.
+- API para busca de informações.
 
 ## Minha experiência como desenvolvedor
 Durante o desenvolvimento deste projeto, enfrentei desafios interessantes, principalmente na extração de dados estruturados a partir de PDFs e na aplicação do front em vue que por eu não entender a ferramenta. A integração entre os diferentes componentes foi de grande aprendizado.
